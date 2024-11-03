@@ -1,0 +1,130 @@
+<!-- templates/medical_report.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Medical Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="report_style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Medical Report - {{ patient.name }}</h1>
+
+        <h2 class="section-title">Vital Signs and Clinical Measurements</h2>
+        <table class="details-table">
+            <tr>
+                <td>Heart Rate</td>
+                <td>{{ vitals.heart_rate if vitals else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Blood Pressure</td>
+                <td>{{ vitals.blood_pressure if vitals else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Respiratory Rate</td>
+                <td>{{ vitals.respiratory_rate if vitals else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Temperature</td>
+                <td>{{ vitals.temperature if vitals else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Oxygen Saturation (SpO2)</td>
+                <td>{{ vitals.oxygen_saturation if vitals else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Glasgow Coma Scale (GCS)</td>
+                <td>{{ vitals.gcs if vitals else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Laboratory Results</h2>
+        <table class="details-table">
+            <tr>
+                <td>White Blood Cell (WBC) Count</td>
+                <td>{{ lab_results.wbc_count if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Lactate Levels</td>
+                <td>{{ lab_results.lactate_levels if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>C-reactive Protein (CRP)</td>
+                <td>{{ lab_results.crp if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Procalcitonin</td>
+                <td>{{ lab_results.procalcitonin if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Blood Cultures</td>
+                <td>{{ lab_results.blood_cultures if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Creatinine</td>
+                <td>{{ lab_results.creatinine if lab_results else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>BUN</td>
+                <td>{{ lab_results.bun if lab_results else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Current Medications and Interventions</h2>
+        <table class="details-table">
+            <tr>
+                <td>Antibiotics and Antivirals</td>
+                <td>{{ medications.antibiotics if medications else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Fluids</td>
+                <td>{{ medications.fluids if medications else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Vasopressors</td>
+                <td>{{ medications.vasopressors if medications else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Other Medications</td>
+                <td>{{ medications.other_medications if medications else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Clinical Notes</h2>
+        <table class="details-table">
+            <tr>
+                <td>Recent Physician Notes</td>
+                <td>{{ clinical_notes.physician_notes if clinical_notes else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Nurse Observations</td>
+                <td>{{ clinical_notes.nurse_observations if clinical_notes else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Discharge Summaries</td>
+                <td>{{ clinical_notes.discharge_summary if clinical_notes else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Procedures and History</h2>
+        <table class="details-table">
+            <tr>
+                <td>Recent Procedures</td>
+                <td>{{ procedures.recent_procedures if procedures else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Past Sepsis Episodes</td>
+                <td>{{ procedures.past_sepsis if procedures else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <div class="metadata">
+            <p>Report generated on: {{ vitals.recorded_at.strftime('%Y-%m-%d %H:%M') if vitals else 'N/A' }}</p>
+        </div>
+
+        <a href="{{ url_for('patient_list') }}" class="back-link">Back to Patient List</a>
+    </div>
+</body>
+</html>
