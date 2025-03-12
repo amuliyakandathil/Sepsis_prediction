@@ -1,0 +1,131 @@
+/* static/css/report_style.css */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('hospital.jpeg') no-repeat center center;
+    background-size: cover;
+    color: #e0e0e0;
+    min-height: 100vh;
+  }
+
+.container {
+    width: 80%;
+    margin: 8rem auto 50px;
+    max-width: 1000px;
+}
+
+h1 {
+    text-align: center;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.section-title {
+    background: rgba(10, 10, 30, 0.85);
+    color: #e0e0e0;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-bottom: 30px;
+}
+
+.details-table td {
+    padding: 20px;
+    background: #d3d3db;
+    color: #1b1a1a;
+}
+
+.details-table tr {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.details-table tr:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.details-table td:first-child {
+    border-radius: 10px 0 0 10px;
+    font-weight: 500;
+    width: 30%;
+}
+
+.details-table td:last-child {
+    border-radius: 0 10px 10px 0;
+    width: 70%;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 24px;
+    background: #d3d3db;
+    color: #1b1a1a;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.back-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.metadata {
+    margin-top: 30px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin-top: 6rem;
+    }
+    
+    .details-table {
+        font-size: 14px;
+    }
+    
+    .details-table td {
+        padding: 12px 8px;
+    }
+    
+    .details-table td:first-child {
+        width: 40%;
+    }
+    
+    .details-table td:last-child {
+        width: 60%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        margin-top: 5rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .details-table {
+        font-size: 13px;
+    }
+}
