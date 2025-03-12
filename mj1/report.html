@@ -1,130 +1,591 @@
-<!-- templates/medical_report.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Medical Report</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="report_style.css">
+    <title>Patient Medical Report Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --darker-surface: #171717;
+            --primary-red: #e53935;
+            --light-red: #ff6b6b;
+            --white: #ffffff;
+            --light-gray: #aaaaaa;
+            --mid-gray: #555555;
+            --dark-gray: #333333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            line-height: 1.6;
+            padding: 20px 0 40px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+        }
+        
+        h1 {
+            color: var(--white);
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            text-align: center;
+            color: var(--light-gray);
+            font-size: 1rem;
+        }
+        
+        .section-title {
+            color: var(--light-red);
+            border-left: 4px solid var(--primary-red);
+            padding-left: 12px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            height: 1px;
+            background-color: var(--primary-red);
+            flex-grow: 1;
+            margin-left: 15px;
+            opacity: 0.4;
+        }
+        
+        form {
+            display: block;
+            width: 100%;
+        }
+        
+        .form-section {
+            background-color: var(--dark-surface);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 1px solid var(--dark-gray);
+        }
+        
+        .form-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            border-color: var(--mid-gray);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .form-col {
+            flex: 1 0 calc(50% - 20px);
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-col {
+                flex: 1 0 100%;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--light-gray);
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-gray);
+            background-color: var(--darker-surface);
+            color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
+        }
+        
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: var(--mid-gray);
+            font-size: 0.9rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group-highlight {
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .form-group-highlight::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-red);
+            opacity: 0.5;
+            border-radius: 3px;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            min-width: 150px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-red);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(229, 57, 53, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: var(--dark-gray);
+            color: var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--mid-gray);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.4rem;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+        }
+        
+        .metadata {
+            text-align: center;
+            color: var(--light-gray);
+            margin-top: 40px;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid var(--dark-gray);
+        }
+        
+        .required-field::after {
+            content: '*';
+            color: var(--primary-red);
+            margin-left: 4px;
+        }
+        
+        .form-note {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background-color: var(--dark-gray);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-red);
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Patient Medical Report - {{ patient.name }}</h1>
-
-        <h2 class="section-title">Vital Signs and Clinical Measurements</h2>
-        <table class="details-table">
-            <tr>
-                <td>Heart Rate</td>
-                <td>{{ vitals.heart_rate if vitals else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Blood Pressure</td>
-                <td>{{ vitals.blood_pressure if vitals else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Respiratory Rate</td>
-                <td>{{ vitals.respiratory_rate if vitals else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Temperature</td>
-                <td>{{ vitals.temperature if vitals else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Oxygen Saturation (SpO2)</td>
-                <td>{{ vitals.oxygen_saturation if vitals else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Glasgow Coma Scale (GCS)</td>
-                <td>{{ vitals.gcs if vitals else 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <h2 class="section-title">Laboratory Results</h2>
-        <table class="details-table">
-            <tr>
-                <td>White Blood Cell (WBC) Count</td>
-                <td>{{ lab_results.wbc_count if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Lactate Levels</td>
-                <td>{{ lab_results.lactate_levels if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>C-reactive Protein (CRP)</td>
-                <td>{{ lab_results.crp if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Procalcitonin</td>
-                <td>{{ lab_results.procalcitonin if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Blood Cultures</td>
-                <td>{{ lab_results.blood_cultures if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Creatinine</td>
-                <td>{{ lab_results.creatinine if lab_results else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>BUN</td>
-                <td>{{ lab_results.bun if lab_results else 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <h2 class="section-title">Current Medications and Interventions</h2>
-        <table class="details-table">
-            <tr>
-                <td>Antibiotics and Antivirals</td>
-                <td>{{ medications.antibiotics if medications else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Fluids</td>
-                <td>{{ medications.fluids if medications else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Vasopressors</td>
-                <td>{{ medications.vasopressors if medications else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Other Medications</td>
-                <td>{{ medications.other_medications if medications else 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <h2 class="section-title">Clinical Notes</h2>
-        <table class="details-table">
-            <tr>
-                <td>Recent Physician Notes</td>
-                <td>{{ clinical_notes.physician_notes if clinical_notes else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Nurse Observations</td>
-                <td>{{ clinical_notes.nurse_observations if clinical_notes else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Discharge Summaries</td>
-                <td>{{ clinical_notes.discharge_summary if clinical_notes else 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <h2 class="section-title">Procedures and History</h2>
-        <table class="details-table">
-            <tr>
-                <td>Recent Procedures</td>
-                <td>{{ procedures.recent_procedures if procedures else 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td>Past Sepsis Episodes</td>
-                <td>{{ procedures.past_sepsis if procedures else 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <div class="metadata">
-            <p>Report generated on: {{ vitals.recorded_at.strftime('%Y-%m-%d %H:%M') if vitals else 'N/A' }}</p>
+        <header>
+            <h1>Patient Medical Report Form</h1>
+            <p class="header-subtitle">Comprehensive clinical documentation for patient care</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
         </div>
-
-        <a href="{{ url_for('patient_list') }}" class="back-link">Back to Patient List</a>
+        
+        <form id="medicalReportForm" action="/submit_report" method="POST">
+            <!-- Patient Information -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">👤</span>Patient Information</h2>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="patient_name" class="required-field">Patient Name</label>
+                            <input type="text" id="patient_name" name="patient[name]" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="patient_id" class="required-field">Patient ID</label>
+                            <input type="text" id="patient_id" name="patient[id]" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="date_of_birth">Date of Birth</label>
+                            <input type="date" id="date_of_birth" name="patient[dob]">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="admission_date">Admission Date</label>
+                            <input type="date" id="admission_date" name="patient[admission_date]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vital Signs and Clinical Measurements -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">❤️</span>Vital Signs and Clinical Measurements</h2>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="heart_rate">Heart Rate</label>
+                            <input type="text" id="heart_rate" name="vitals[heart_rate]" placeholder="e.g., 72 bpm">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="blood_pressure">Blood Pressure</label>
+                            <input type="text" id="blood_pressure" name="vitals[blood_pressure]" placeholder="e.g., 120/80 mmHg">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="respiratory_rate">Respiratory Rate</label>
+                            <input type="text" id="respiratory_rate" name="vitals[respiratory_rate]" placeholder="e.g., 16 breaths/min">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="temperature">Temperature</label>
+                            <input type="text" id="temperature" name="vitals[temperature]" placeholder="e.g., 98.6°F / 37.0°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="oxygen_saturation">Oxygen Saturation (SpO2)</label>
+                            <input type="text" id="oxygen_saturation" name="vitals[oxygen_saturation]" placeholder="e.g., 98%">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group form-group-highlight">
+                            <label for="gcs">Glasgow Coma Scale (GCS)</label>
+                            <input type="text" id="gcs" name="vitals[gcs]" placeholder="e.g., 15">
+                            <p class="form-note">Score between 3-15 (Eyes: 1-4, Verbal: 1-5, Motor: 1-6)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Laboratory Results -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">🧪</span>Laboratory Results</h2>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="wbc_count">White Blood Cell (WBC) Count</label>
+                            <input type="text" id="wbc_count" name="lab_results[wbc_count]" placeholder="e.g., 7.5 x 10^9/L">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="lactate_levels">Lactate Levels</label>
+                            <input type="text" id="lactate_levels" name="lab_results[lactate_levels]" placeholder="e.g., 1.2 mmol/L">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group form-group-highlight">
+                            <label for="crp">C-reactive Protein (CRP)</label>
+                            <input type="text" id="crp" name="lab_results[crp]" placeholder="e.g., 3.2 mg/L">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group form-group-highlight">
+                            <label for="procalcitonin">Procalcitonin</label>
+                            <input type="text" id="procalcitonin" name="lab_results[procalcitonin]" placeholder="e.g., 0.15 ng/mL">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="blood_cultures">Blood Cultures</label>
+                            <input type="text" id="blood_cultures" name="lab_results[blood_cultures]" placeholder="e.g., Negative">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="creatinine">Creatinine</label>
+                            <input type="text" id="creatinine" name="lab_results[creatinine]" placeholder="e.g., 0.9 mg/dL">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="bun">BUN</label>
+                            <input type="text" id="bun" name="lab_results[bun]" placeholder="e.g., 15 mg/dL">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="other_labs">Other Relevant Labs</label>
+                            <input type="text" id="other_labs" name="lab_results[other_labs]" placeholder="e.g., Platelets: 250 x 10^9/L">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Current Medications and Interventions -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">💊</span>Current Medications and Interventions</h2>
+                <div class="form-group form-group-highlight">
+                    <label for="antibiotics">Antibiotics and Antivirals</label>
+                    <textarea id="antibiotics" name="medications[antibiotics]" placeholder="List all antibiotics and antivirals (name, dosage, frequency, route)"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="fluids">Fluids</label>
+                            <textarea id="fluids" name="medications[fluids]" placeholder="e.g., Normal Saline 0.9%, 1L, rate: 125 mL/hr"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="vasopressors">Vasopressors</label>
+                            <textarea id="vasopressors" name="medications[vasopressors]" placeholder="e.g., Norepinephrine 0.05 mcg/kg/min"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="other_medications">Other Medications</label>
+                    <textarea id="other_medications" name="medications[other_medications]" placeholder="List all other medications (name, dosage, frequency, route)"></textarea>
+                </div>
+            </div>
+            
+            <!-- Clinical Notes -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">📝</span>Clinical Notes</h2>
+                <div class="form-group">
+                    <label for="physician_notes">Recent Physician Notes</label>
+                    <textarea id="physician_notes" name="clinical_notes[physician_notes]" placeholder="Enter physician's notes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="nurse_observations">Nurse Observations</label>
+                    <textarea id="nurse_observations" name="clinical_notes[nurse_observations]" placeholder="Enter nurse observations"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="discharge_summary">Discharge Summaries</label>
+                    <textarea id="discharge_summary" name="clinical_notes[discharge_summary]" placeholder="Enter discharge summary if applicable"></textarea>
+                </div>
+            </div>
+            
+            <!-- Procedures and History -->
+            <div class="form-section">
+                <h2 class="section-title"><span class="section-icon">🔍</span>Procedures and History</h2>
+                <div class="form-group">
+                    <label for="recent_procedures">Recent Procedures</label>
+                    <textarea id="recent_procedures" name="procedures[recent_procedures]" placeholder="List all recent procedures with dates"></textarea>
+                </div>
+                <div class="form-group form-group-highlight">
+                    <label for="past_sepsis">Past Sepsis Episodes</label>
+                    <textarea id="past_sepsis" name="procedures[past_sepsis]" placeholder="Describe any past sepsis episodes including dates, severity, and treatments"></textarea>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/patient_list'">Back to Patient List</button>
+                <button type="button" class="btn btn-secondary" id="save-draft">Save as Draft</button>
+                <button type="submit" class="btn btn-primary">Save Medical Report</button>
+            </div>
+        </form>
+        
+        <div class="metadata">
+            <p>Form generated on: <span id="current-date"></span> | Last edited: <span id="last-edited">Never</span></p>
+        </div>
     </div>
+
+    <script>
+        // Set current date
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const currentDate = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('current-date').textContent = currentDate;
+            
+            // Calculate form progress
+            const form = document.getElementById('medicalReportForm');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            const progressFill = document.getElementById('progress-fill');
+            
+            function updateProgress() {
+                let completed = 0;
+                inputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        completed++;
+                    }
+                });
+                
+                const progress = (completed / inputs.length) * 100;
+                progressFill.style.width = `${progress}%`;
+                
+                // Update color based on progress
+                if (progress < 33) {
+                    progressFill.style.backgroundColor = '#e53935'; // Red
+                } else if (progress < 66) {
+                    progressFill.style.backgroundColor = '#ff9800'; // Orange
+                } else {
+                    progressFill.style.backgroundColor = '#4caf50'; // Green
+                }
+            }
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+            });
+            
+            // Save as draft functionality
+            document.getElementById('save-draft').addEventListener('click', function() {
+                const now = new Date().toLocaleDateString('en-US', options);
+                document.getElementById('last-edited').textContent = now;
+                alert('Draft saved successfully');
+            });
+            
+            // Initial progress calculation
+            updateProgress();
+            
+            // Form validation highlighting
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+                const requiredInputs = form.querySelectorAll('[required]');
+                
+                requiredInputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        input.style.borderColor = 'var(--primary-red)';
+                        input.style.boxShadow = '0 0 0 2px rgba(229, 57, 53, 0.3)';
+                        isValid = false;
+                    } else {
+                        input.style.borderColor = '';
+                        input.style.boxShadow = '';
+                    }
+                });
+                
+                if (!isValid) {
+                    event.preventDefault();
+                    alert('Please fill in all required fields');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

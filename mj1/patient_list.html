@@ -4,30 +4,275 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient List</title>
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-bg: #0f0f0f;
+      --dark-card: #1a1a1a;
+      --dark-card-hover: #242424;
+      --primary-red: #e94057;
+      --primary-red-hover: #f27387;
+      --white: #ffffff;
+      --light-gray: #e0e0e0;
+      --gray-text: #b0b0b0;
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-red);
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--primary-red);
+      border-radius: 3px;
+    }
+
+    .patient-table-container {
+      background-color: var(--dark-card);
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    .table-header {
+      background-color: rgba(233, 64, 87, 0.1);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-weight: 500;
+      color: var(--primary-red);
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      background-color: var(--dark-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: var(--white);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-red);
+    }
+
+    .search-input::placeholder {
+      color: var(--gray-text);
+    }
+
+    .patient-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .patient-table thead tr {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .patient-table th {
+      text-align: left;
+      padding: 1rem 1.5rem;
+      font-weight: 500;
+      color: var(--gray-text);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .patient-table tbody tr {
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
+
+    .patient-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .patient-table tbody tr:hover {
+      background-color: var(--dark-card-hover);
+    }
+
+    .patient-table td {
+      padding: 1rem 1.5rem;
+    }
+
+    .patient-table a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .patient-table a:hover {
+      color: var(--primary-red);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+
+    .status-critical {
+      background-color: rgba(233, 64, 87, 0.2);
+      color: var(--primary-red);
+    }
+
+    .status-stable {
+      background-color: rgba(46, 213, 115, 0.2);
+      color: #2ed573;
+    }
+
+    .room-number {
+      background-color: var(--dark-bg);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      font-weight: 500;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background-color: var(--dark-card);
+      border: 1px solid var(--border-color);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: var(--dark-card-hover);
+      border-color: var(--primary-red);
+    }
+
+    .back-button::before {
+      content: "←";
+      margin-right: 0.5rem;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      gap: 0.5rem;
+    }
+
+    .pagination-button {
+      padding: 0.5rem 0.75rem;
+      background-color: var(--dark-card);
+      border: 1px solid var(--border-color);
+      color: var(--white);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-button:hover,
+    .pagination-button.active {
+      background-color: var(--primary-red);
+      border-color: var(--primary-red);
+    }
+  </style>
 </head>
 <body>
   <div class="container">
+    <a href="Dash.html" class="back-button">Back to Dashboard</a>
     <h1>Patient List</h1>
-    <table class="patient-table">
-      <thead>
-        <tr>
-          <th>Patient Name</th>
-          <th>Room No</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><a href="patient1.html">John Doe</a></td>
-          <td>101</td>
-        </tr>
-        <tr>
-          <td><a href="patient2.html">Jane Smith</a></td>
-          <td>102</td>
-        </tr>
-        <!-- Add more patients as needed -->
-      </tbody>
-    </table>
+    
+    <div class="patient-table-container">
+      <div class="table-header">
+        <div class="table-title">All Patients (2)</div>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Search patients...">
+        </div>
+      </div>
+      
+      <table class="patient-table">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Status</th>
+            <th>Room No</th>
+            <th>Admission Date</th>
+            <th>Doctor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href="patient1.html">John Doe <span class="status-badge status-critical">Critical</span></a>
+            </td>
+            <td>Critical</td>
+            <td><span class="room-number">101</span></td>
+            <td>Mar 10, 2025</td>
+            <td>Dr. Wilson</td>
+          </tr>
+          <tr>
+            <td>
+              <a href="patient2.html">Jane Smith <span class="status-badge status-stable">Stable</span></a>
+            </td>
+            <td>Stable</td>
+            <td><span class="room-number">102</span></td>
+            <td>Mar 11, 2025</td>
+            <td>Dr. Johnson</td>
+          </tr>
+          <!-- Add more patients as needed -->
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="pagination">
+      <button class="pagination-button active">1</button>
+      <button class="pagination-button">2</button>
+      <button class="pagination-button">3</button>
+      <button class="pagination-button">→</button>
+    </div>
   </div>
 </body>
 </html>

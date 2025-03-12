@@ -3,51 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital ICU Dashboard</title>
-    <link rel="stylesheet" href="Dash_style.css">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0f0f0f;
+            --dark-card: #1a1a1a;
+            --dark-card-hover: #242424;
+            --primary-red: #e94057;
+            --primary-red-hover: #f27387;
+            --white: #ffffff;
+            --light-gray: #e0e0e0;
+            --gray-text: #b0b0b0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(to right, rgba(233, 64, 87, 0.05), rgba(0, 0, 0, 0));
+            border-left: 4px solid var(--primary-red);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+        }
+
+        .welcome-banner::before {
+            content: "👋";
+            margin-right: 10px;
+            font-size: 1.7rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-button {
+            background-color: var(--dark-card);
+            padding: 1.8rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-red), var(--primary-red-hover));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .stat-button:hover {
+            background-color: var(--dark-card-hover);
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .stat-button:hover::after {
+            transform: scaleX(1);
+        }
+
+        .stat-title {
+            color: var(--gray-text);
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 1rem;
+        }
+
+        .view-details {
+            margin-top: auto;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            opacity: 0.7;
+            transition: opacity 0.25s ease;
+        }
+
+        .stat-button:hover .view-details {
+            opacity: 1;
+        }
+
+        .alerts-container {
+            grid-column: 1 / -1;
+            background-color: var(--dark-card);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .alerts-header {
+            background: linear-gradient(to right, var(--primary-red), #ff7e67);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alerts-header::before {
+            content: "🔔";
+            margin-right: 8px;
+        }
+
+        .notifications-container {
+            padding: 1.2rem;
+        }
+
+        .notification {
+            background-color: rgba(233, 64, 87, 0.07);
+            border-left: 3px solid var(--primary-red);
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification:hover {
+            background-color: rgba(233, 64, 87, 0.1);
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .close-notification:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .bottom-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .bottom-button {
+            background-color: var(--dark-card);
+            padding: 1.8rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.25s ease;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bottom-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-red), var(--primary-red-hover));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .bottom-button:hover {
+            background-color: var(--dark-card-hover);
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .bottom-button:hover::after {
+            transform: scaleX(1);
+        }
+
+        .bottom-button h3 {
+            color: var(--primary-red);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .bottom-button div {
+            color: var(--gray-text);
+            font-size: 0.9rem;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="logo">Sepsify</div>
+    </header>
+
     <div class="dashboard">
         <div class="welcome-banner">
             Welcome Doctor...
         </div>
 
         <div class="stats-container">
-            <a href="icu.html" class="stat-button">
-                <div class="stat-title">Total ICU patients</div>
-                <div class="stat-number">10</div>
-                <div>View Details →</div>
+            <!-- ICU Patients -->
+            <a href="patient_list.html" class="stat-button">
+                <div class="stat-title">
+                    Total ICU patients
+                </div>
+                <div class="stat-number">
+                    10
+                </div>
+                <div class="view-details">
+                    View Details →
+                </div>
             </a>
 
-            <a href="newAd.html" class="stat-button">
-                <div class="stat-title">New Admissions</div>
-                <div class="stat-number">1</div>
-                <div>View Details →</div>
+            <!-- New Admissions -->
+            <a href="{{ url_for('new_admissions') }}" class="stat-button">
+                <div class="stat-title">
+                    New Admissions
+                </div>
+                <div class="stat-number">
+                    1
+                </div>
+                <div class="view-details">
+                    View Details →
+                </div>
             </a>
 
-            <a href="critical_admissions.html" class="stat-button">
-                <div class="stat-title">Critical Admissions</div>
-                <div class="stat-number">0</div>
-                <div>View Details →</div>
+            <!-- Critical Admissions -->
+            <a href="{{ url_for('critical_admissions') }}" class="stat-button">
+                <div class="stat-title">
+                    Critical Admissions
+                </div>
+                <div class="stat-number">
+                    0
+                </div>
+                <div class="view-details">
+                    View Details →
+                </div>
             </a>
 
-            <a href="alerts.html" class="stat-button alert-button">
-                <div class="stat-title">ALERTS!!!</div>
-                <div>View Details →</div>
-            </a>
-        </div>
+            <!-- Alerts Section -->
+            <!-- <div class="alerts-container">
+                <div class="alerts-header">
+                    ALERTS
+                </div>
+                <div class="notifications-container">
+                    {% for notification in notifications %}
+                    <div class="notification">
+                        {{ notification.message }}
+                        <button class="close-notification" onclick="closeNotification(this)">×</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div> -->
 
         <div class="bottom-buttons">
-            <a href="patient_list.html" class="bottom-button">
+            <a href="{{ url_for('patient_list') }}" class="bottom-button">
                 <h3>Patient List</h3>
-                <p>View all patients →</p>
+                <div>View all patients →</div>
             </a>
-
-            <a href="doctor.html" class="bottom-button">
+            
+            <a href="{{ url_for('doctor_profile') }}" class="bottom-button">
                 <h3>Profile</h3>
-                <p>View profile →</p>
+                <div>View profile →</div>
             </a>
         </div>
     </div>
+
+    <script>
+        function closeNotification(button) {
+            const notification = button.parentElement;
+            notification.classList.add('fade-out');
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
 </body>
 </html>
